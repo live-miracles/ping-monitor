@@ -27,6 +27,13 @@ jobs:
           git merge-base --is-ancestor "$GITHUB_SHA" origin/main
       - run: npm ci
       - run: npm run build
-      - run: npx electron-builder --win --publish=always
+      # Publish to whichever repo this workflow is running in, so the same tag
+      # push produces a release on both the personal and the live-miracles
+      # copy (electron-builder.yml hardcodes only the personal one, and the
+      # per-repo GITHUB_TOKEN can't write to the other repo).
+      - run: >-
+          npx electron-builder --win --publish=always
+          -c.publish.owner=${{ github.repository_owner }}
+          -c.publish.repo=${{ github.event.repository.name }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
