@@ -1,5 +1,6 @@
 import { spawn } from 'child_process'
 import type { HopSample } from '../../shared/types'
+import { trimTrailingSilentHops } from '../../shared/trim-hops'
 import { isNativeIcmpAvailable } from './icmp-windows'
 import { resolveIPv4 } from './resolve-ipv4'
 import { runTracerouteNative } from './traceroute-windows'
@@ -170,6 +171,10 @@ function runTracerouteSubprocess(host: string): Promise<HopSample[]> {
  * initialize at all.
  */
 export async function runTraceroute(host: string): Promise<HopSample[]> {
+  return trimTrailingSilentHops(await runTracerouteRaw(host))
+}
+
+async function runTracerouteRaw(host: string): Promise<HopSample[]> {
   if (isNativeIcmpAvailable()) {
     const ipv4 = await resolveIPv4(host)
     if (ipv4) {

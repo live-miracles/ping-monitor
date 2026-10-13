@@ -12,6 +12,12 @@ const PER_HOP_TIMEOUT_MS = 1_000
 // small, at the cost of a trace taking a few pool-sized batches instead of
 // one - still far faster than the old subprocess-per-hop `tracert`.
 const HOP_CONCURRENCY = 3
+// Once this many hops in a row (counting back from the newest) have been
+// silent, the path has almost certainly black-holed - a trace to a target
+// whose route dies mid-way used to keep probing every remaining TTL up to
+// MAX_HOPS, ~10s of pointless timeouts per trace on the shared native pool.
+// A multiple of HOP_CONCURRENCY so the check lines up with batch boundaries.
+const GIVE_UP_AFTER_SILENT_HOPS = 9
 
 /**
  * Native Windows traceroute: every hop is probed by the same persistent
@@ -61,6 +67,10 @@ export async function runTracerouteNative(
     }
 
     if (reachedDestination) break
+
+    let trailingSilent = 0
+    for (let i = hops.length - 1; i >= 0 && hops[i].address === null; i--) trailingSilent++
+    if (trailingSilent >= GIVE_UP_AFTER_SILENT_HOPS) break
   }
 
   return hops

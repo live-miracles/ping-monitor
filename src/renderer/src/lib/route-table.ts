@@ -1,4 +1,5 @@
 import type { HopRecord, HopSample, NetworkUpdate } from '../../../shared/types'
+import { trimTrailingSilentHops } from '../../../shared/trim-hops'
 
 // Matches `hop-history.ts`'s `DEFAULT_MAX_RUNS` on the main-process side, so
 // a live-buffer view and a DB-range view (see `collectRunsFromHopRecords`)
@@ -30,7 +31,10 @@ export function collectRuns(updates: NetworkUpdate[], maxRuns: number = MAX_RUNS
 
   for (const update of updates) {
     if (update.hopsCapturedAt !== null && update.hops.length > 0) {
-      runsByCapturedAt.set(update.hopsCapturedAt, update.hops)
+      // Trimmed here too, not only when a trace is captured, so runs still
+      // buffered from before trailing silent hops were dropped display cleanly.
+      const hops = trimTrailingSilentHops(update.hops)
+      if (hops.length > 0) runsByCapturedAt.set(update.hopsCapturedAt, hops)
     }
   }
 
@@ -64,7 +68,13 @@ export function collectRunsFromHopRecords(records: HopRecord[]): TraceRun[] {
     }
   }
 
-  return Array.from(runsByTraceId.values()).sort((a, b) => a.capturedAt - b.capturedAt)
+  // Older builds stored a silent row for every TTL up to 30 on a trace that
+  // never reached its destination - trim those so history reads the same as
+  // newly captured runs.
+  return Array.from(runsByTraceId.values())
+    .map((run) => ({ ...run, hops: trimTrailingSilentHops(run.hops) }))
+    .filter((run) => run.hops.length > 0)
+    .sort((a, b) => a.capturedAt - b.capturedAt)
 }
 
 export interface RouteRow {
