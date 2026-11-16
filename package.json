@@ -3,7 +3,10 @@
   "version": "1.13.9",
   "description": "Free, open-source network monitor: continuous ping, packet loss and traceroute path graphs to tell whether it's your network, your ISP or the internet",
   "main": "./out/main/index.js",
-  "author": "live-miracles",
+  "author": {
+    "name": "Live Stream Miracles",
+    "url": "https://live-miracles.github.io/"
+  },
   "homepage": "https://github.com/live-miracles/ping-monitor#readme",
   "repository": {
     "type": "git",
