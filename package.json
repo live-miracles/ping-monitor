@@ -1,7 +1,7 @@
 {
   "name": "secure-electron-monitor",
   "version": "1.13.9",
-  "description": "Secure Electron + React + TypeScript app scaffolded with electron-vite",
+  "description": "Free, open-source network monitor: continuous ping, packet loss and traceroute path graphs to tell whether it's your network, your ISP or the internet",
   "main": "./out/main/index.js",
   "author": "example.com",
   "private": true,
