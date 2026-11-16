@@ -12,6 +12,7 @@ exactly where the problem is.
 [![Latest release](https://img.shields.io/github/v/release/live-miracles/ping-monitor?label=release&color=4f8cff)](https://github.com/live-miracles/ping-monitor/releases/latest)
 [![CI](https://img.shields.io/github/actions/workflow/status/live-miracles/ping-monitor/ci.yml?branch=main&label=CI)](https://github.com/live-miracles/ping-monitor/actions/workflows/ci.yml)
 [![Downloads](https://img.shields.io/github/downloads/live-miracles/ping-monitor/total?color=3ecf8e)](https://github.com/live-miracles/ping-monitor/releases)
+[![License: MIT](https://img.shields.io/github/license/live-miracles/ping-monitor)](LICENSE)
 [![Stars](https://img.shields.io/github/stars/live-miracles/ping-monitor?style=flat)](https://github.com/live-miracles/ping-monitor/stargazers)
 [![Last commit](https://img.shields.io/github/last-commit/live-miracles/ping-monitor)](https://github.com/live-miracles/ping-monitor/commits/main)
 [![Platform](https://img.shields.io/badge/installer-Windows-0078d4?logo=windows&logoColor=white)](#install)
@@ -148,3 +149,7 @@ npm run format:check && npm run typecheck && npm test
 ping monitor, network monitoring, latency monitor, packet loss, traceroute, MTR, network path
 visualization, ISP troubleshooting, live streaming network diagnostics, PingPlotter alternative,
 ThousandEyes alternative, Electron, React, TypeScript, SQLite.
+
+## License
+
+[MIT](LICENSE)

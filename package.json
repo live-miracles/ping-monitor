@@ -4,6 +4,7 @@
   "description": "Free, open-source network monitor: continuous ping, packet loss and traceroute path graphs to tell whether it's your network, your ISP or the internet",
   "main": "./out/main/index.js",
   "author": "example.com",
+  "license": "MIT",
   "private": true,
   "scripts": {
     "postinstall": "prisma generate && electron-rebuild -f -w better-sqlite3",
